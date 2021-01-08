@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman Game</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>    
+    <div class="game">
+        <div class="display">
+            <div class="description">
+                <h3>
+                    Welcome to Hangman
+                </h3>
+                <span>
+                    You have to correctly guess the country name chosen at random. 
+                </span>
+                <span>
+                    You have 6 chances for incorrect guesses and then you lose. 
+                </span>
+                <span>
+                    Good Luck!
+                </span>
+                <span id="wincounter">test</span>
+                <span id="highscore">test</span>
+            </div>
+            <div class="hangman-image" id="hangman-image">
+                <span>testimagerow1</span>
+                <span>testimagerow2</span>
+                <span>testimagerow3</span>
+                <span>testimagerow4</span>
+                <span>testimagerow5</span>
+                <span>testimagerow6</span>
+                <span>testimagerow7</span>
+            </div>
+            <div class="word">
+                <span>Word:</span>
+                <div id="wordthing">Placeholder Word</div>
+            </div>
+            
+            <div class="letters">
+                <span>Incorrect Guesses:</span>
+                <div id="letters">Placeholder Letters</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="hangman.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
