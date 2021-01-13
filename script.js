@@ -1,118 +1,183 @@
-const hangmanDisplay = document.getElementById("hangman-image");
-const wordDisplay = document.getElementById("word");
-const guessedLettersDisplay = document.getElementById("letters");
-let incorrect = 0;
-let wordLength = 0;
-let letters = [];
-let guess = [];
-let nameArray = [];
-let lettersToFill = [];
+// Variable Declarations
+// Playing the Game
+let categoriesListToChooseFrom = [];
+let wordsListToChooseFrom = [];
+let incorrectLettersList = [];
+let currentGuessList = [];
+let lettersListForCountryName = [];
+let char = "";
+let countryName = "";
+
+// Variables for Keeping Score
 let streakScore = 0;
 let highScore = 0;
 
-// Start the game and load basic values
-document.addEventListener("DOMContentLoaded", startGame());
+// Variable for Keeping Track of Number of Incorrect Guesses so Far
+let incorrectGuesses = 0;
+
+
+// Functions to set words category
+function loadCountries() {
+    categoriesListToChooseFrom = categories.countries; // same as categories["countries"]
+    console.log(categoriesListToChooseFrom);
+    
+    loadGameDisplay();
+    startGame();
+}
+
+
+// Main Functions for the Game
+function loadGameDisplay() {
+    document.getElementById("topic-menu").style.display = "none";
+    document.getElementById("game-display").style.display = "grid";
+}
+
+function loadTopicsMenu() {
+    document.getElementById("topic-menu").style.display = "flex";
+    document.getElementById("game-display").style.display = "none";
+}
+
+
+// Updating Text Fields with New Information
+function updateText() {
+    // Updating Score
+    document.getElementById("wincounter").innerHTML = "Streak: " + streakScore;
+    document.getElementById("highscore").innerHTML = "High Score: " + highScore;
+
+    // Updating Image
+    document.getElementById("hangman-image").innerHTML = hangman[incorrectGuesses].replace(
+        / /g,
+        "&nbsp;"
+    );
+
+    // Updating Guesses
+    document.getElementById("current-word").innerHTML = currentGuessList.join(" ");
+
+    // Updating Incorrect Letters
+    document.getElementById("incorrect-letters").innerHTML = incorrectLettersList.join(" ");
+}
+
+// Starting the Game with Basic Information; Easier to do it this way
 function startGame() {
-    // Reset values
-    incorrect = 0;
-    wordLength = 0;
-    letters = [];
-    guess = [];
-    nameArray = [];
-    lettersToFill = [];
+    // Reseting game variables
+    wordsListToChooseFrom = [];
+    incorrectLettersList = [];
+    currentGuessList = [];
+    lettersListForCountryName = [];
+    streakScore = 0;
+    incorrectGuesses = 0;
 
-    pos1 = String.fromCharCode(Math.floor(Math.random() * 22) + 65);
-    console.log("Letter Category: " + pos1);
 
-    letterCategory = words[pos1];
+    /// Pick a new random word
+    // Picking inner category from chosen word category by button click earlier
+    innerListLength = categoriesListToChooseFrom.len; // same as categories["len"]
+    pos1 = Math.floor(Math.random() * innerListLength);
+    /// DEBUG
+    console.log("Letter Category: " + String.fromCharCode(pos1 + 65));
+
+    letterCategory = categoriesListToChooseFrom[pos1];
+    /// DEBUG
     console.log(letterCategory);
 
     pos2 = Math.floor(Math.random() * letterCategory.length);
     countryName = letterCategory[pos2];
+    /// DEBUG
     console.log("Country Name: " + countryName);
 
+    // Generating the list with underscores for the current guesses
     for (i = 0; i < countryName.length; i++) {
-        if (i == 0) {
-            guess.push(countryName[i]);
-        } else if (countryName[i].match(/[a-zA-Z]/)) {
-            guess.push("_");
-        } else if (countryName[i] == " ") {
-            guess.push("&nbsp");
-        } else {
-            guess.push(countryName[i]);
+        if (countryName[i].match(/[a-zA-Z]/)) // Checking if its a single letter from a-z or A-Z
+        {
+            currentGuessList.push("_");
+        } 
+        else if (countryName[i] == " ") // Checking if its just a space
+        {
+            currentGuessList.push("&nbsp");
+        } 
+        else // checks for any other special character (probably breaks the html)
+        // needs fixing but later not now
+        {
+            currentGuessList.push(countryName[i]);
         }
-        nameArray.push(countryName[i]);
+
+        // Generates a list with the real letters in their appropriate places; idk why
+        // maybe I just don't remember
+        lettersListForCountryName.push(countryName[i]);
     }
 
-    console.log(guess);
-    console.log(nameArray);
-    console.log("Guess is: " + guess.join(" "));
+    // If the first letter of the word is also present in other places in the word, replace those places with the letter
+    for (x=0; x < lettersListForCountryName.length; x++)
+    {
+        if (lettersListForCountryName[x] == countryName[0].toLowerCase() ||
+            lettersListForCountryName[x] == countryName[0].toUpperCase()) 
+        {
+            currentGuessList[x] = lettersListForCountryName[x];
+        }
+    }
 
-    document.getElementById("wordthing").innerHTML = guess.join(" ");
-    document.getElementById("letters").innerHTML = "";
-    document.getElementById("wincounter").innerHTML = "Hot Streak: " + streakScore;
-    document.getElementById("highscore").innerHTML = "Highscore: " + highScore;
 
-    document.getElementById("hangman-image").innerHTML = hangman[0].replace(
-        / /g,
-        "&nbsp;"
-    );
+    // Update with new Information
+    updateText();
 }
 
+function play(key) {
+    letter = String.fromCharCode(key);
 
-// Function to play the game
-function play(e) {
-    var char = String.fromCharCode(e);
-    console.log(char.toLowerCase());
-    console.log(char);
-    if (nameArray.includes(char.toLowerCase()) || nameArray.includes(char.toUpperCase())) {
-        for (i=0; i < nameArray.length; i++) {
-            if (nameArray[i] == char.toLowerCase() || nameArray[i] == char.toUpperCase()) {
-                guess[i] = nameArray[i];
+    // Checking if the letter entered is a valid letter
+    if (lettersListForCountryName.includes(letter.toLowerCase()) ||
+        lettersListForCountryName.includes(letter.toUpperCase()))
+    {
+        // Replaces the "_" in the guess list with the appropriate letter(s)
+        for (i=0; i < lettersListForCountryName.length; i++)
+        {
+            if (lettersListForCountryName[i] == letter.toLowerCase() ||
+                lettersListForCountryName[i] == letter.toUpperCase()) 
+            {
+                currentGuessList[i] = lettersListForCountryName[i];
             }
         }
         
-        console.log("Guess is: " + guess.join(" "));
-        document.getElementById("wordthing").innerHTML = guess.join(" ");
-
-        if (!guess.includes("_")) {
-            streakScore += 1;
-            if (streakScore > highScore) {
-                highScore = streakScore;
-            }
-
-            setTimeout(() => {
-                alert("You won!");
-                startGame();
-            }, 10);
-        }
+        /// DEBUG
+        console.log("Guess is: " + currentGuessList.join(" "));
     } 
-    else {
-        incorrect += 1;
-        document.getElementById("hangman-image").innerHTML = hangman[incorrect].replace(
-            / /g,
-            "&nbsp;"
-        );
+    else // Checks if the letter is not a valid letter
+    {
+        incorrectGuesses += 1;
 
-        // Add letter to guessed letters
-        if (!letters.includes(char.toUpperCase())) {
-            letters.push(char.toUpperCase());
-            document.getElementById("letters").innerHTML = letters.join(" ");
-            console.log(letters);
-        }
+        // Adds the letter capitalized to the list containing incorrect guesses
+        letter = letter.toUpperCase();
+        incorrectLettersList.push(letter);
     }
 
-    if (incorrect == 6) {
+    // Update text anyway
+    updateText();
+
+    if (!currentGuessList.includes("_"))
+    {
+        streakScore += 1;
+        if (streakScore > highScore)
+        {
+            highScore = streakScore;
+        }
+
+        setTimeout(() => {
+            alert("You won!");
+            return startGame();
+        }, 10);
+    }
+    
+    if (incorrectGuesses == 6)
+    {
         streakScore = 0;
         setTimeout(() => {
             alert("You lose" + "\nThe word was: " + countryName);
-            startGame();
+            return startGame();
         }, 10);
     }
 }
 
 
-// Gets key clicked, idk how else to do this
+// God save me because I have no fucking idea how or why this even works and won't for probably a very long time still
 document.addEventListener("keydown", function (event) {
     // Get user input as x
     var x = event.which;
@@ -123,3 +188,4 @@ document.addEventListener("keydown", function (event) {
         play(x);
     }
 });
+
