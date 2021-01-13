@@ -9,23 +9,31 @@
 </head>
 <body>    
     <div class="game">
-        <div class="display">
-            <div class="description">
-                <h3>
-                    Welcome to Hangman
-                </h3>
-                <span>
-                    You have to correctly guess the country name chosen at random. 
-                </span>
-                <span>
-                    You have 6 chances for incorrect guesses and then you lose. 
-                </span>
-                <span>
-                    Good Luck!
-                </span>
-                <span id="wincounter">test</span>
-                <span id="highscore">test</span>
-            </div>
+        <div class="description">
+            <h3>
+                Welcome to Hangman
+            </h3>
+            <span>
+                You have to correctly guess the word chosen at random once you pick a category. 
+            </span>
+            <span>
+                You have 6 chances for incorrect guesses and then you lose. 
+            </span>
+            <span>
+                Good Luck!
+            </span>
+        </div>
+        <div class="menu" id="topic-menu">
+            <h3>Choose your topic:</h3>
+            <button id="countries-btn" onclick="loadCountries()">Countries</button>
+        </div>
+        <div class="display" id="game-display">
+            <span class="scores">
+                <div class="wincounter" id="wincounter">textstreak</div>
+                <div class="highscore" id="highscore">testhighscore</div>
+            </span>
+            
+
             <div class="hangman-image" id="hangman-image">
                 <span>testimagerow1</span>
                 <span>testimagerow2</span>
@@ -35,14 +43,15 @@
                 <span>testimagerow6</span>
                 <span>testimagerow7</span>
             </div>
+
             <div class="word">
                 <span>Word:</span>
-                <div id="wordthing">Placeholder Word</div>
+                <div id="current-word">Placeholder Word</div>
             </div>
             
             <div class="letters">
                 <span>Incorrect Guesses:</span>
-                <div id="letters">Placeholder Letters</div>
+                <div id="incorrect-letters">Placeholder Letters</div>
             </div>
         </div>
     </div>
