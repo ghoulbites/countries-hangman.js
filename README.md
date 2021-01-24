@@ -1,6 +1,6 @@
 # countries-hangman.js
-A simple hangman game with country names as the word bank build using vanilla JS
+A simple hangman game with country names as the word bank build using vanilla JS.
 
 ---
 
-v.: 0.0.3
+v. 0.1.0

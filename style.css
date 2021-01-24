@@ -63,7 +63,7 @@ body {
 .display {
     display: none;
     grid-template-columns: 1fr;
-    grid-template-rows: 5% 30% 10% 10%;
+    grid-template-rows: 10% 5% 30% 10% 10%;
     gap: 0px 0px;
     grid-template-areas:
         "."
@@ -74,10 +74,29 @@ body {
     width: 100%;
     background-color: rgb(15, 15, 15);
     vertical-align: middle;
-    margin: auto;
     color: white;
     font-size: 16px;
 }
+
+
+.close {
+    display: grid;
+    margin: 0;
+    justify-content: right;
+    padding-right: 10%;
+}
+.btn-close {
+    border: 0px solid;
+    background-color: grey;
+    font-size: 1em;
+    height: 40px;
+    padding: 0px 10px;
+    transition: 0.2s;
+}
+.btn-close:hover {
+    background-color: blue;
+}
+
 
 .scores {
     display: flex;

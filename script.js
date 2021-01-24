@@ -7,6 +7,7 @@ let currentGuessList = [];
 let lettersListForCountryName = [];
 let char = "";
 let countryName = "";
+let lastCategory = "";
 
 // Variables for Keeping Score
 let streakScore = 0;
@@ -16,7 +17,7 @@ let highScore = 0;
 let incorrectGuesses = 0;
 
 
-// Functions to set words category
+// Functions to set words category (Triggered solely by button clicks)
 function loadCountries() {
     categoriesListToChooseFrom = categories.countries; // same as categories["countries"]
     console.log(categoriesListToChooseFrom);
@@ -35,6 +36,18 @@ function loadGameDisplay() {
 function loadTopicsMenu() {
     document.getElementById("topic-menu").style.display = "flex";
     document.getElementById("game-display").style.display = "none";
+
+    hardResetGame();
+    /// Needs an option of a hard reset for resetting the high score too, but thats for later
+    /// Currently, the high score is tracked
+
+    console.log("Reseting Game");
+    console.log("Words List from Topic: " + wordsListToChooseFrom);
+    console.log("Incorrect Letters: " + incorrectLettersList);
+    console.log("Current Guesses: " + currentGuessList);
+    console.log("Letters of Current Word: " + lettersListForCountryName);
+    console.log("Current Streak: " + streakScore);
+    console.log("Number of incorrect guesses: " + incorrectGuesses);
 }
 
 
@@ -57,16 +70,22 @@ function updateText() {
     document.getElementById("incorrect-letters").innerHTML = incorrectLettersList.join(" ");
 }
 
-// Starting the Game with Basic Information; Easier to do it this way
-function startGame() {
-    // Reseting game variables
+// Resetting the game variables
+function resetGame() {
     wordsListToChooseFrom = [];
     incorrectLettersList = [];
     currentGuessList = [];
     lettersListForCountryName = [];
-    streakScore = 0;
     incorrectGuesses = 0;
+}
+function hardResetGame() {
+    streakScore = 0;
+}
 
+
+// Starting the Game with Basic Information; Easier to do it this way
+function startGame() {
+    resetGame();
 
     /// Pick a new random word
     // Picking inner category from chosen word category by button click earlier
