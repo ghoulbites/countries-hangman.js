@@ -5,6 +5,7 @@ let wordsListToChooseFrom = [];
 let incorrectLettersList = [];
 let currentGuessList = [];
 let lettersListForCountryName = [];
+let hintsList = [];
 let char = "";
 let countryName = "";
 let lastCategory = "";
@@ -21,6 +22,8 @@ let incorrectGuesses = 0;
 function loadCountries() {
     categoriesListToChooseFrom = categories.countries; // same as categories["countries"]
     console.log(categoriesListToChooseFrom);
+    hintsList = hints.countries;
+    console.log(hintsList);
     
     loadGameDisplay();
     startGame();
@@ -28,6 +31,8 @@ function loadCountries() {
 function loadAnimals() {
     categoriesListToChooseFrom = categories.animals; // same as categories["countries"]
     console.log(categoriesListToChooseFrom);
+    hintsList = hints.animals;
+    console.log(hintsList);
     
     loadGameDisplay();
     startGame();
@@ -63,6 +68,8 @@ function updateText() {
     // Updating Score
     document.getElementById("wincounter").innerHTML = "Streak: " + streakScore;
     document.getElementById("highscore").innerHTML = "High Score: " + highScore;
+
+    document.getElementById("hinter").innerHTML = "Hint: " + hintsList[pos1];
 
     // Updating Image and removes all whitespaces (.replace(/ /g, &nbsp))
     // https://stackoverflow.com/questions/10800355/remove-whitespaces-inside-a-string-in-javascript

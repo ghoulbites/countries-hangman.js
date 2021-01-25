@@ -56,6 +56,43 @@ const hangman = [`
 <span>============</span>
 `];
 
+const hints = {
+    "countries": [
+        "Country name starts with an A",
+        "Country name starts with a B",
+        "Country name starts with a C",
+        "Country name starts with a D",
+        "Country name starts with an E",
+        "Country name starts with an F",
+        "Country name starts with a G",
+        "Country name starts with an H",
+        "Country name starts with an I",
+        "Country name starts with a J",
+        "Country name starts with a K",
+        "Country name starts with an L",
+        "Country name starts with an M",
+        "Country name starts with an N",
+        "Country name starts with an O",
+        "Country name starts with a P",
+        "Country name starts with a Q",
+        "Country name starts with an R",
+        "Country name starts with an S",
+        "Country name starts with a T",
+        "Country name starts with a U",
+        "Country name starts with a V",
+        "Country name starts with a W",
+        "Country name starts with an X",
+        "Country name starts with a Y",
+        "Country name starts with a Z"
+    ],
+    "animals": [
+        "The word is an Amphibian",
+        "The word is a Bird",
+        "The word is a Sea/Water Creature",
+        "The word is a Mammal",
+        "The word is a Reptile",
+    ]
+};
 
 const categories = {
     "countries": {

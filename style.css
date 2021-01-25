@@ -51,6 +51,7 @@ body {
     border: 0px solid;
     padding: 10px 20px;
     background-color: ivory;
+    margin-bottom: 10px;
     cursor: pointer;
     transition: 0.2s;
 }
