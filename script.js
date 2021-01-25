@@ -44,11 +44,11 @@ function loadTopicsMenu() {
     document.getElementById("topic-menu").style.display = "flex";
     document.getElementById("game-display").style.display = "none";
 
-    hardResetGame();
+    resetGamePlusScore();
     /// Needs an option of a hard reset for resetting the high score too, but thats for later
     /// Currently, the high score is tracked
 
-    console.log("Reseting Game");
+    console.log("Resetting Game");
     console.log("Words List from Topic: " + wordsListToChooseFrom);
     console.log("Incorrect Letters: " + incorrectLettersList);
     console.log("Current Guesses: " + currentGuessList);
@@ -64,7 +64,8 @@ function updateText() {
     document.getElementById("wincounter").innerHTML = "Streak: " + streakScore;
     document.getElementById("highscore").innerHTML = "High Score: " + highScore;
 
-    // Updating Image
+    // Updating Image and removes all whitespaces (.replace(/ /g, &nbsp))
+    // https://stackoverflow.com/questions/10800355/remove-whitespaces-inside-a-string-in-javascript
     document.getElementById("hangman-image").innerHTML = hangman[incorrectGuesses].replace(
         / /g,
         "&nbsp;"
@@ -85,7 +86,8 @@ function resetGame() {
     lettersListForCountryName = [];
     incorrectGuesses = 0;
 }
-function hardResetGame() {
+function resetGamePlusScore() {
+    resetGame();
     streakScore = 0;
 }
 
@@ -115,24 +117,24 @@ function startGame() {
         if (countryName[i].match(/[a-zA-Z]/)) // Checking if its a single letter from a-z or A-Z
         {
             currentGuessList.push("_");
-        } 
+        }
         else if (countryName[i] == " ") // Checking if its just a space
         {
             currentGuessList.push("&nbsp");
         } 
-        else // checks for any other special character (probably breaks the html)
+        else // checks for any other special character (probably can break the html)
         // needs fixing but later not now
         {
             currentGuessList.push(countryName[i]);
         }
 
-        // Generates a list with the real letters in their appropriate places; idk why
+        // Generates a list with the real letters in their appropriate places; idk why :/
         // maybe I just don't remember
         lettersListForCountryName.push(countryName[i]);
     }
 
     // If the first letter of the word is also present in other places in the word, replace those places with the letter
-    for (x=0; x < lettersListForCountryName.length; x++)
+    for (x = 0; x < lettersListForCountryName.length; x++)
     {
         if (lettersListForCountryName[x] == countryName[0].toLowerCase() ||
             lettersListForCountryName[x] == countryName[0].toUpperCase()) 
@@ -140,7 +142,6 @@ function startGame() {
             currentGuessList[x] = lettersListForCountryName[x];
         }
     }
-
 
     // Update with new Information
     updateText();
@@ -154,7 +155,7 @@ function play(key) {
         lettersListForCountryName.includes(letter.toUpperCase()))
     {
         // Replaces the "_" in the guess list with the appropriate letter(s)
-        for (i=0; i < lettersListForCountryName.length; i++)
+        for (i = 0; i < lettersListForCountryName.length; i++)
         {
             if (lettersListForCountryName[i] == letter.toLowerCase() ||
                 lettersListForCountryName[i] == letter.toUpperCase()) 
