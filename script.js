@@ -25,6 +25,13 @@ function loadCountries() {
     loadGameDisplay();
     startGame();
 }
+function loadAnimals() {
+    categoriesListToChooseFrom = categories.animals; // same as categories["countries"]
+    console.log(categoriesListToChooseFrom);
+    
+    loadGameDisplay();
+    startGame();
+}
 
 
 // Main Functions for the Game
