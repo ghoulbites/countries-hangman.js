@@ -1,27 +1,33 @@
 // Variable Declarations
 // Playing the Game
-let categoriesListToChooseFrom = [];
-let wordsListToChooseFrom = [];
-let incorrectLettersList = [];
-let currentGuessList = [];
-let lettersListForCountryName = [];
+let categoriesMasterList = [];
+let wordsFromCategoryChosenList = [];
+let incorrectGuessedLettersList = [];
+let currentGuessesCharsList = [];
+let countryNameLettersList = [];
 let hintsList = [];
-let char = "";
-let countryName = "";
-let lastCategory = "";
-
-// Variables for Keeping Score
-let streakScore = 0;
-let highScore = 0;
+let randomWordChosenString = "";
 
 // Variable for Keeping Track of Number of Incorrect Guesses so Far
-let incorrectGuesses = 0;
+let incorrectGuessesMadeInt = 0;
+
+// Variables for Keeping Score
+let streakScoreInt = 0;
+let highestStreakInt = 0;
+let highScoreInt = 0;
+
+// Variables for keeping track of repeated words
+let tempReturnedList = [];
+let tempCategoryInt = 0;
+let tempWordString = "";
+let previousThreeCategoriesList = [];
+let previousChosenWordString = "";
 
 
 // Functions to set words category (Triggered solely by button clicks)
 function loadCountries() {
-    categoriesListToChooseFrom = categories.countries; // same as categories["countries"]
-    console.log(categoriesListToChooseFrom);
+    categoriesMasterList = categories.countries; // same as categories["countries"]
+    console.log(categoriesMasterList);
     hintsList = hints.countries;
     console.log(hintsList);
     
@@ -29,8 +35,8 @@ function loadCountries() {
     startGame();
 }
 function loadAnimals() {
-    categoriesListToChooseFrom = categories.animals; // same as categories["countries"]
-    console.log(categoriesListToChooseFrom);
+    categoriesMasterList = categories.animals; // same as categories["countries"]
+    console.log(categoriesMasterList);
     hintsList = hints.animals;
     console.log(hintsList);
     
@@ -40,6 +46,7 @@ function loadAnimals() {
 
 
 // Main Functions for the Game
+// Functions for Button Interactions
 function loadGameDisplay() {
     document.getElementById("topic-menu").style.display = "none";
     document.getElementById("game-display").style.display = "grid";
@@ -49,108 +56,190 @@ function loadTopicsMenu() {
     document.getElementById("topic-menu").style.display = "flex";
     document.getElementById("game-display").style.display = "none";
 
-    resetGamePlusScore();
-    /// Needs an option of a hard reset for resetting the high score too, but thats for later
-    /// Currently, the high score is tracked
-
+    resetGamePlusStreakScore();
+    // Needs an option of a hard reset for resetting the high score too, but thats for later
+    // Currently, the high score is tracked when returning to the topic menu
+    
+    // Debug Loggings
+    /*
     console.log("Resetting Game");
-    console.log("Words List from Topic: " + wordsListToChooseFrom);
-    console.log("Incorrect Letters: " + incorrectLettersList);
-    console.log("Current Guesses: " + currentGuessList);
-    console.log("Letters of Current Word: " + lettersListForCountryName);
-    console.log("Current Streak: " + streakScore);
-    console.log("Number of incorrect guesses: " + incorrectGuesses);
+    console.log("Words List from Topic: " + wordsFromCategoryChosenList);
+    console.log("Incorrect Letters: " + incorrectGuessedLettersList);
+    console.log("Current Guesses: " + currentGuessesCharsList);
+    console.log("Letters of Current Word: " + countryNameLettersList);
+    console.log("Current Streak: " + streakScoreInt);
+    console.log("Number of incorrect guesses: " + incorrectGuessesMadeInt);
+     */
+}
+
+
+// Resetting the game variables
+// Simple Reset
+function resetGame() {
+    incorrectGuessedLettersList = [];
+    currentGuessesCharsList = [];
+    countryNameLettersList = [];
+    incorrectGuessesMadeInt = 0;
+    randomWordChosenString = "";
+
+    tempReturnedList = [];
+    tempCategoryInt = 0;
+    tempWordString = "";
+}
+// Hard Reset for Streak Score Only
+function resetGamePlusStreakScore() {
+    resetGame();
+    categoriesMasterList = [];
+    wordsFromCategoryChosenList = [];
+    hintsList = [];
+    streakScoreInt = 0;
+
+    previousThreeCategoriesList = [];
+    previousChosenWordString = "";
+}
+// Super Reset for All Scores Too
+function resetGamePlusAllScores() {
+    resetGamePlusStreakScore();
+    highScoreInt = 0;
 }
 
 
 // Updating Text Fields with New Information
 function updateText() {
     // Updating Score
-    document.getElementById("wincounter").innerHTML = "Streak: " + streakScore;
-    document.getElementById("highscore").innerHTML = "High Score: " + highScore;
+    document.getElementById("wincounter").innerHTML = "Streak: " + streakScoreInt;
+    document.getElementById("highscore").innerHTML = "High Score: " + highScoreInt;
+    document.getElementById("higheststreak").innerHTML = "Best Streak: " + highestStreakInt;
 
     document.getElementById("hinter").innerHTML = "Hint: " + hintsList[pos1];
 
     // Updating Image and removes all whitespaces (.replace(/ /g, &nbsp))
     // https://stackoverflow.com/questions/10800355/remove-whitespaces-inside-a-string-in-javascript
-    document.getElementById("hangman-image").innerHTML = hangman[incorrectGuesses].replace(
+    document.getElementById("hangman-image").innerHTML = hangman[incorrectGuessesMadeInt].replace(
         / /g,
         "&nbsp;"
     );
 
     // Updating Guesses
-    document.getElementById("current-word").innerHTML = currentGuessList.join(" ");
+    document.getElementById("current-word").innerHTML = currentGuessesCharsList.join(" ");
 
     // Updating Incorrect Letters
-    document.getElementById("incorrect-letters").innerHTML = incorrectLettersList.join(" ");
-}
-
-// Resetting the game variables
-function resetGame() {
-    wordsListToChooseFrom = [];
-    incorrectLettersList = [];
-    currentGuessList = [];
-    lettersListForCountryName = [];
-    incorrectGuesses = 0;
-}
-function resetGamePlusScore() {
-    resetGame();
-    streakScore = 0;
+    document.getElementById("incorrect-letters").innerHTML = incorrectGuessedLettersList.join(" ");
 }
 
 
 // Starting the Game with Basic Information; Easier to do it this way
-function startGame() {
-    resetGame();
-
-    /// Pick a new random word
+// Function to Choose Random Word from Chosen Category of Words
+//  Function to choose a word
+function randomWordGenerator() {
+    // Pick a new random word
     // Picking inner category from chosen word category by button click earlier
-    innerListLength = categoriesListToChooseFrom.len; // same as categories["len"]
+    innerListLength = categoriesMasterList.len; // same as categories["len"]
     pos1 = Math.floor(Math.random() * innerListLength);
-    /// DEBUG
-    console.log("Letter Category: " + String.fromCharCode(pos1 + 65));
+    console.log("DEBUG - TOPIC INNER CATEGORY INDEX TO BE CHOSEN:", pos1);
+    console.log("DEBUG - TOPIC INNER CATEGORY INDEX TO BE CHOSEN(Based on Hint):\n", hintsList[pos1]);
 
-    letterCategory = categoriesListToChooseFrom[pos1];
-    /// DEBUG
-    console.log(letterCategory);
+    letterCategory = categoriesMasterList[pos1];
+    console.log("DEBUG - TOPIC INNER CATEGORY CHOSEN LIST: \n", letterCategory);
 
     pos2 = Math.floor(Math.random() * letterCategory.length);
-    countryName = letterCategory[pos2];
-    /// DEBUG
-    console.log("Country Name: " + countryName);
+    randomWordChosenString = letterCategory[pos2];
+    console.log("DEBUG - RANDOM WORD CHOSEN:", randomWordChosenString);
+
+    if ((randomWordChosenString != previousChosenWordString) &&
+        (!previousThreeCategoriesList.includes(pos1)))
+    {
+        returnList = [];
+        returnList.push(pos1);
+        returnList.push(randomWordChosenString);
+        return returnList;
+    }
+    else
+    {
+        return randomWordGenerator();
+    }
+}
+
+//  Funciton to choose the word
+function chooseWordToGuess() {
+    tempReturnedList = randomWordGenerator();
+
+    // Debug Console Logging
+    /*
+    console.log("DEBUG - RETURNED LIST TO CHOOSE WORD:", tempReturnedList);
+    tempCategoryInt = tempReturnedList[0];
+    console.log("DEBUG - CATEGORY RETURNED:", tempCategoryInt);
+    tempWordString = tempReturnedList[1];
+    console.log("DEBUG - WORD RETURNED:", tempWordString);
+
+    console.log("DEBUG - PREVIOUS WORD (Before):", previousChosenWordString);
+    console.log("DEBUG - LIST OF THREE PREVIOUS CATEGORIES (Before)", previousThreeCategoriesList);
+     */
+
+    // Changing the previous word
+    if (randomWordChosenString != previousChosenWordString) {
+        previousChosenWordString = tempWordString;
+    }
+
+    // Updating the list of previous categories
+    if (previousThreeCategoriesList.length == 3) {
+        previousThreeCategoriesList.splice(0, 1);
+        previousThreeCategoriesList.push(tempCategoryInt);
+    }
+    else
+    {
+        previousThreeCategoriesList.push(tempCategoryInt);
+    }
+
+    // Debug Console Logging
+    /*
+    console.log("DEBUG - PREVIOUS WORD (After):", previousChosenWordString);
+    console.log("DEBUG - LIST OF THREE PREVIOUS CATEGORIES (After)", previousThreeCategoriesList);
+     */
 
     // Generating the list with underscores for the current guesses
-    for (i = 0; i < countryName.length; i++) {
-        if (countryName[i].match(/[a-zA-Z]/)) // Checking if its a single letter from a-z or A-Z
+    for (i = 0; i < randomWordChosenString.length; i++) {
+        if (randomWordChosenString[i].match(/[a-zA-Z]/)) // Checking if its a single letter from a-z or A-Z
         {
-            currentGuessList.push("_");
+            currentGuessesCharsList.push("_");
         }
-        else if (countryName[i] == " ") // Checking if its just a space
+        else if (randomWordChosenString[i] == " ") // Checking if its just a space
         {
-            currentGuessList.push("&nbsp");
+            currentGuessesCharsList.push("&nbsp"); // "&nbsp" is the html equivalent of a space
         } 
-        else // checks for any other special character (probably can break the html)
+        else 
+        // checks for any other special character (probably can break the html)
         // needs fixing but later not now
         {
-            currentGuessList.push(countryName[i]);
+            currentGuessesCharsList.push(randomWordChosenString[i]);
         }
 
         // Generates a list with the real letters in their appropriate places; idk why :/
         // maybe I just don't remember
-        lettersListForCountryName.push(countryName[i]);
+        countryNameLettersList.push(randomWordChosenString[i]);
     }
 
     // If the first letter of the word is also present in other places in the word, replace those places with the letter
-    for (x = 0; x < lettersListForCountryName.length; x++)
+    for (x = 0; x < countryNameLettersList.length; x++)
     {
-        if (lettersListForCountryName[x] == countryName[0].toLowerCase() ||
-            lettersListForCountryName[x] == countryName[0].toUpperCase()) 
+        if (countryNameLettersList[x] == randomWordChosenString[0].toLowerCase() ||
+            countryNameLettersList[x] == randomWordChosenString[0].toUpperCase()) 
         {
-            currentGuessList[x] = lettersListForCountryName[x];
+            currentGuessesCharsList[x] = countryNameLettersList[x];
         }
     }
+}
 
-    // Update with new Information
+
+
+function startGame() {
+    // Soft reset the game in all cases to prevent misinformation
+    resetGame();
+
+    // Choose Word
+    chooseWordToGuess();
+
+    // Update display with new Information
     updateText();
 }
 
@@ -158,41 +247,46 @@ function play(key) {
     letter = String.fromCharCode(key);
 
     // Checking if the letter entered is a valid letter
-    if (lettersListForCountryName.includes(letter.toLowerCase()) ||
-        lettersListForCountryName.includes(letter.toUpperCase()))
+    if (countryNameLettersList.includes(letter.toLowerCase()) ||
+        countryNameLettersList.includes(letter.toUpperCase()))
     {
         // Replaces the "_" in the guess list with the appropriate letter(s)
-        for (i = 0; i < lettersListForCountryName.length; i++)
+        for (i = 0; i < countryNameLettersList.length; i++)
         {
-            if (lettersListForCountryName[i] == letter.toLowerCase() ||
-                lettersListForCountryName[i] == letter.toUpperCase()) 
+            if (countryNameLettersList[i] == letter.toLowerCase() ||
+                countryNameLettersList[i] == letter.toUpperCase()) 
             {
-                currentGuessList[i] = lettersListForCountryName[i];
+                currentGuessesCharsList[i] = countryNameLettersList[i];
             }
         }
         
-        /// DEBUG
-        console.log("Guess is: " + currentGuessList.join(" "));
+        // DEBUG
+        console.log("Guess is: " + currentGuessesCharsList.join(" "));
     } 
     else // Checks if the letter is not a valid letter
     {
-        incorrectGuesses += 1;
+        incorrectGuessesMadeInt += 1;
 
         // Adds the letter capitalized to the list containing incorrect guesses
         letter = letter.toUpperCase();
-        incorrectLettersList.push(letter);
+        incorrectGuessedLettersList.push(letter);
     }
 
     // Update text anyway
     updateText();
 
-    if (!currentGuessList.includes("_"))
+    // If player wins
+    if (!currentGuessesCharsList.includes("_"))
     {
-        streakScore += 1;
-        if (streakScore > highScore)
+        // Increase streak
+        streakScoreInt += 1;
+        if (streakScoreInt > highestStreakInt)
         {
-            highScore = streakScore;
+            highestStreakInt = streakScoreInt;
         }
+        
+        // Increase Score
+        highScoreInt += 1;
 
         setTimeout(() => {
             alert("You won!");
@@ -200,11 +294,13 @@ function play(key) {
         }, 10);
     }
     
-    if (incorrectGuesses == 6)
+    // If player loses
+    if (incorrectGuessesMadeInt == 6)
     {
-        streakScore = 0;
+        // Reset Streak to 0
+        streakScoreInt = 0;
         setTimeout(() => {
-            alert("You lose" + "\nThe word was: " + countryName);
+            alert("You lose" + "\nThe word was: " + randomWordChosenString);
             return startGame();
         }, 10);
     }
