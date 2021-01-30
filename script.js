@@ -149,6 +149,7 @@ function randomWordGenerator() {
     if ((randomWordChosenString != previousChosenWordString) &&
         (!previousThreeCategoriesList.includes(pos1)))
     {
+        console.log("passed");
         returnList = [];
         returnList.push(pos1);
         returnList.push(randomWordChosenString);
@@ -156,6 +157,7 @@ function randomWordGenerator() {
     }
     else
     {
+        console.log("should be repeated");
         return randomWordGenerator();
     }
 }
@@ -163,13 +165,14 @@ function randomWordGenerator() {
 //  Funciton to choose the word
 function chooseWordToGuess() {
     tempReturnedList = randomWordGenerator();
-
+    tempCategoryInt = tempReturnedList[0];
+    tempWordString = tempReturnedList[1];
     // Debug Console Logging
     /*
     console.log("DEBUG - RETURNED LIST TO CHOOSE WORD:", tempReturnedList);
-    tempCategoryInt = tempReturnedList[0];
+    
     console.log("DEBUG - CATEGORY RETURNED:", tempCategoryInt);
-    tempWordString = tempReturnedList[1];
+    
     console.log("DEBUG - WORD RETURNED:", tempWordString);
 
     console.log("DEBUG - PREVIOUS WORD (Before):", previousChosenWordString);
@@ -192,10 +195,10 @@ function chooseWordToGuess() {
     }
 
     // Debug Console Logging
-    /*
+    /**/
     console.log("DEBUG - PREVIOUS WORD (After):", previousChosenWordString);
     console.log("DEBUG - LIST OF THREE PREVIOUS CATEGORIES (After)", previousThreeCategoriesList);
-     */
+    
 
     // Generating the list with underscores for the current guesses
     for (i = 0; i < randomWordChosenString.length; i++) {
