@@ -50,6 +50,7 @@ body {
 .menu button {
     border: 0px solid;
     padding: 10px 20px;
+    font-size: 1em;
     background-color: ivory;
     margin-bottom: 10px;
     cursor: pointer;
@@ -57,7 +58,7 @@ body {
 }
 .menu button:hover {
     transform: translateY(-1px) scale(1.1);
-    background-color: green;
+    background-color: #89cff0;
 }
 
 
@@ -88,14 +89,15 @@ body {
 }
 .btn-close {
     border: 0px solid;
-    background-color: grey;
+    background-color: ivory;
     font-size: 1em;
     height: 40px;
     padding: 0px 10px;
     transition: 0.2s;
+    cursor: pointer;
 }
 .btn-close:hover {
-    background-color: blue;
+    background-color: #89cff0;
 }
 
 
