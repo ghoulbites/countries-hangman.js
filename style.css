@@ -25,13 +25,18 @@ body {
     align-items: center;
     background-color: rgb(15, 15, 15);
     color: white;
-    padding: 20px 0px 60px;
+    padding: 20px 0px 20px;
 }
 .description h3 {
     margin-bottom: 10px;
     font-size: 2rem;
 }
-.description span {
+.description div {
+    margin-bottom: 6px;
+    text-align: center;
+}
+.description div span {
+    display: block;
     margin-bottom: 6px;
 }
 
@@ -57,7 +62,7 @@ body {
     transition: 0.2s;
 }
 .menu button:hover {
-    transform: translateY(-1px) scale(1.1);
+    transform: translateY(-1px) scale(1.04);
     background-color: #89cff0;
 }
 
@@ -65,7 +70,7 @@ body {
 .display {
     display: none;
     grid-template-columns: 1fr;
-    grid-template-rows: 8% 5% 5% 30% 10% 10%;
+    grid-template-rows: 20% 30% 10% 10%;
     gap: 0px 0px;
     grid-template-areas:
         "."
@@ -80,37 +85,55 @@ body {
     font-size: 16px;
 }
 
+.game-display-controls {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    margin: 0 auto;
+}
+
+.g-header-r {
+    display: grid;
+    text-align: center;
+    align-items: center;
+    grid-template-columns: 14vw 40vw 14vw;
+    grid-template-rows: 1fr;
+    padding: 0 auto;
+    margin: 0 auto 10px;
+}
+.g-header-r * {
+    display: block;
+    margin: 0;
+}
+
 
 .close {
-    display: grid;
-    margin: 0;
-    justify-content: right;
-    padding-right: 10%;
+    display: flex;
 }
+
+#wincounter {
+    text-align: left;
+}
+#higheststreak {
+    text-align: right;
+    margin-right: 11px;
+}
+
+
 .btn-close {
     border: 0px solid;
     background-color: ivory;
     font-size: 1em;
     height: 40px;
-    padding: 0px 10px;
+    max-width: 130px;
+    padding: 0px 14px;
+    margin-left: auto;
     transition: 0.2s;
     cursor: pointer;
 }
 .btn-close:hover {
     background-color: #89cff0;
-}
-
-
-.scores {
-    display: grid;
-    grid-template-columns: 30% 40% 30%;
-}
-.scores div {
-    margin: auto;
-}
-
-.hints {
-    text-align: center;
+    transform: translateY(-1px) scale(1.04);
 }
 
 

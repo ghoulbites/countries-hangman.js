@@ -12,55 +12,64 @@
     <div class="game">
         <div class="description">
             <h3>
-                Welcome to Hangman
+                Welcome to Hangman!
             </h3>
-            <span>
-                You have to correctly guess the word chosen at random once you pick a category. 
-            </span>
-            <span>
-                You have 6 chances for incorrect guesses and then you lose. 
-            </span>
-            <span>
-                Good Luck!
-            </span>
+            <div id="game-rules">
+                <span>
+                    You have to correctly guess the word chosen at random once you pick a category. 
+                </span>
+                <span>
+                    You have 6 chances for incorrect guesses and then you lose. 
+                </span>
+                <span>
+                    Good Luck!
+                </span>
+            </div>
         </div>
         <div class="menu" id="topic-menu">
             <h3>Choose your topic:</h3>
-            <button id="countries-btn" onclick="loadCountries()">Countries</button>
-            <button id="countries-btn" onclick="loadAnimals()">Animals & Fish</button>
+            <button class="countries-btn" onclick="loadCountries()">Countries</button>
+            <button class="countries-btn" onclick="loadAnimals()">Animals & Fish</button>
         </div>
         <div class="display" id="game-display">
-            <span class="close">
-                <button class="btn-close" onclick="loadTopicsMenu()">Back to Menu</button>
-            </span>
-            
-            <span class="scores">
-                <div id="wincounter">textstreak</div>
-                <div id="highscore">testhighscore</div>
-                <div class="" id="higheststreak">testhigheststreak</div>
-            </span>
-            <span class="hints">
-                <div id="hinter">testhint</div>
-            </span>
+            <div class="game-display-controls" id="game-header">
+                <span class="g-header-r">
+                    <div class="empty"></div>
+                    <div class="empty"></div>
+                    <div class="close">
+                        <button class="btn-close" onclick="loadTopicsMenu()">Back to Menu</button>
+                    </div>
+                </span>
+                <span class="g-header-r scores">
+                    <div id="wincounter"></div>
+                    <div id="highscore"></div>
+                    <div id="higheststreak"></div>
+                </span>
+                <span class="g-header-r hints">
+                    <div class="empty"></div>
+                    <div id="hinter"></div>
+                    <div class="empty"></div>
+                </span>
+            </div>
             
             <div class="hangman-image" id="hangman-image">
-                <span>testimagerow1</span>
-                <span>testimagerow2</span>
-                <span>testimagerow3</span>
-                <span>testimagerow4</span>
-                <span>testimagerow5</span>
-                <span>testimagerow6</span>
-                <span>testimagerow7</span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
 
             <div class="word">
                 <span>Word:</span>
-                <div id="current-word">Placeholder Word</div>
+                <div id="current-word"></div>
             </div>
             
             <div class="letters">
                 <span>Incorrect Guesses:</span>
-                <div id="incorrect-letters">Placeholder Letters</div>
+                <div id="incorrect-letters"></div>
             </div>
         </div>
     </div>

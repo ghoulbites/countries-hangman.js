@@ -50,11 +50,13 @@ function loadAnimals() {
 function loadGameDisplay() {
     document.getElementById("topic-menu").style.display = "none";
     document.getElementById("game-display").style.display = "grid";
+    document.getElementById("game-rules").style.display = "none";
 }
 
 function loadTopicsMenu() {
     document.getElementById("topic-menu").style.display = "flex";
     document.getElementById("game-display").style.display = "none";
+    document.getElementById("game-rules").style.display = "block";
 
     resetGamePlusStreakScore();
     // Needs an option of a hard reset for resetting the high score too, but thats for later
@@ -266,6 +268,11 @@ function play(key) {
         // DEBUG
         console.log("Guess is: " + currentGuessesCharsList.join(" "));
     } 
+    else if (incorrectGuessedLettersList.includes(letter.toLowerCase()) ||
+             incorrectGuessedLettersList.includes(letter.toUpperCase())) 
+    {
+        // Do nothing
+    }
     else // Checks if the letter is not a valid letter
     {
         incorrectGuessesMadeInt += 1;
